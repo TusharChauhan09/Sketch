@@ -1,6 +1,6 @@
+import { JWT_SECRET } from '@repo/backend-common/config';
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { JWT_SECRET } from "../lib/config";
 
 export function authMiddleware(
   req: Request,

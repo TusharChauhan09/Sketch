@@ -1,4 +1,4 @@
-import { JWT_SECRET } from "./lib/config";
+import { JWT_SECRET } from '@repo/backend-common/config';
 import { WebSocketServer } from "ws";
 import { parse } from 'url';
 import jwt, { JwtPayload }  from "jsonwebtoken";
