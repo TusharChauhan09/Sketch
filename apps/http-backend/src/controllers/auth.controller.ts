@@ -20,16 +20,24 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = await prismaClient.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-      },
-    });
-    res.status(201).json({
-      message: "User created successfully",
-    });
+    try{
+      const user = await prismaClient.user.create({
+        data: {
+          email,
+          password: hashedPassword,
+          name,
+        },
+      });
+      res.status(201).json({
+        message: "User created successfully",
+      });
+    }
+    catch (err) {
+      console.error(err);
+      return res.status(400).json({
+        message: "user already exists",
+      });
+    }
   } catch (err) {
     console.error(err);
     return res.status(500).json({

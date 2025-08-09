@@ -1,10 +1,12 @@
 import express from "express";
-import { room } from "../controllers/room.controller";
+import { createRoom, getChats } from "../controllers/room.controller";
 import { authMiddleware } from "../middlewares/authMiddleware";
 
 
 const router: express.Router = express.Router();
 
-router.post("/room",authMiddleware ,room);
+router.get("/chat", authMiddleware, getChats);
+
+router.post("/room",authMiddleware ,createRoom);
 
 export default router;
