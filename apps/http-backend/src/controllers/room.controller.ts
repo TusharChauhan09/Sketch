@@ -4,14 +4,27 @@ import { CreateRoomSchema } from "@repo/common/types";
 
 export const getChats = async (req: Request, res: Response): Promise<any> => {
   try {
-    const roomId = req.query.roomId as string;
+    const roomId = req.params.roomId;
     if (!roomId) {
       return res.status(400).json({
         message: "Room ID is required",
       });
     }
 
-    const userId = req.userId;
+    const chats = await prismaClient.chat.findMany({
+      where: {
+        roomId : roomId,
+      },
+      orderBy:{ 
+        id: 'desc'
+      },
+      take: 50
+    })
+
+    return res.status(200).json({
+      chats: chats || []
+    });
+
   } catch (err) {
     console.error(err);
     return res.status(500).json({
