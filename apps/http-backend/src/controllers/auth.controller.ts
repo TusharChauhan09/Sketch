@@ -80,9 +80,6 @@ export const signin = async (req: Request, res: Response): Promise<any> => {
     }
 
     genToken(user.id, res);
-    return res.status(200).json({
-      message: "User signed in successfully",
-    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({
