@@ -5,6 +5,7 @@ import {
   IconEye,
   IconEyeClosed,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import { useState } from "react";
 
 type AuthTemplateProps = {
@@ -54,13 +55,36 @@ export default function AuthTemplate({ isSignIn }: AuthTemplateProps) {
             </div>
             <div className="border-2 rounded-xl border-neutral-700 p-[3px] hover:cursor-pointer">
               <button
-              onClick={()=>{}}
+                onClick={() => {}}
                 type="submit"
                 className="p-2 w-full bg-neutral-500 rounded-md hover:bg-neutral-600 transition hover:cursor-pointer"
               >
                 {" "}
                 {isSignIn ? "Sign In" : "Sign Up"}{" "}
               </button>
+            </div>
+            <div className="flex justify-center mt-4">
+              {isSignIn ? (
+                <div className="text-sm text-neutral-400">
+                  Don't have an account?{" "}
+                  <Link
+                    href="/signup"
+                    className="text-blue-500 hover:underline"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              ) : (
+                <div className="text-sm text-neutral-400">
+                  Already have an account?{" "}
+                  <Link
+                    href="/signin"
+                    className="text-blue-500 hover:underline"
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              )}
             </div>
           </form>
         </div>
