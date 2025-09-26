@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { prismaClient } from "@repo/db/client";
 import { CreateRoomSchema } from "@repo/common/types";
 
-export const getChats = async (req: Request, res: Response): Promise<any> => {
+export const getShapes = async (req: Request, res: Response): Promise<any> => {
   try {
     const roomId = req.params.roomId;
     if (!roomId) {
