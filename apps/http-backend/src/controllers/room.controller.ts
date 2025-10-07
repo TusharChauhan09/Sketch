@@ -18,7 +18,6 @@ export const getShapes = async (req: Request, res: Response): Promise<any> => {
       orderBy:{ 
         id: 'desc'
       },
-      take: 50
     })
 
     return res.status(200).json({

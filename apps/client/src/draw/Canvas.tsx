@@ -1,17 +1,24 @@
-import { RefObject, useEffect, useRef } from "react";
+"use client";
+import { useEffect, useRef } from "react";
 import Draw from ".";
 
-export default async function Canvas({ roomId , socket  }: { roomId: string, socket : WebSocket}) {
+export default function Canvas({
+  roomId,
+  socket,
+}: {
+  roomId: string;
+  socket: WebSocket;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   // * Effect for setting up canvas
   useEffect(() => {
-    if (canvasRef.current) {
+    if (canvasRef.current && socket.readyState === WebSocket.OPEN) {
       const canvas = canvasRef.current;
       canvasRef.current.width = window.innerWidth;
       canvasRef.current.height = window.innerHeight;
-      Draw(canvasRef.current, roomId,socket);
+      Draw(canvasRef.current, roomId, socket);
     }
-  }, [canvasRef]);
+  }, [canvasRef, socket, roomId]);
   return (
     <canvas
       ref={canvasRef}

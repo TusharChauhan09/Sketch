@@ -5,7 +5,7 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router: express.Router = express.Router();
 
-router.get("/shapes/:roomId", authMiddleware, getShapes);
+router.get("/shapes/:roomId", getShapes);
 
 router.post("/room",authMiddleware ,createRoom);
 

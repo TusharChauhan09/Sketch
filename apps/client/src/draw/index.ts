@@ -26,6 +26,8 @@ export default async function Draw(
   // * store existing shapes to redraw them when needed
   let existingShapes: Shape[] = await getExistingShapes(roomId);
 
+  console.log("exisiting shapes", existingShapes);
+
   if (!ctx) return;
 
   // * Listen for messages from the server and update the canvas accordingly
@@ -35,6 +37,7 @@ export default async function Draw(
     if (parsedData.type === "chat") {
       const measurement = JSON.parse(parsedData.measurement) as Shape;
       existingShapes.push(measurement);
+      console.log("New shape received:", measurement);
       clearCanvasRedraw(existingShapes, ctx, canvas);
     }
   };
@@ -64,7 +67,7 @@ export default async function Draw(
     const height = endY - startY;
 
     // * store existing shapes
-    const shape : Shape  = {
+    const shape: Shape = {
       type: "rectangle",
       x: startX,
       y: startY,
@@ -74,13 +77,15 @@ export default async function Draw(
     existingShapes.push(shape as Shape);
 
     // * send the new shape to the ws server
-    socket.send(
-      JSON.stringify({
-        type: "chat",
-        roomId,
-        measurement: JSON.stringify(shape),
-      })
-    );
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          type: "chat",
+          roomId,
+          measurement: JSON.stringify(shape),
+        })
+      );
+    }
   });
   canvas.addEventListener("mousemove", (e) => {
     if (clicked) {
@@ -122,14 +127,19 @@ function clearCanvasRedraw(
 }
 
 // * Get the existing shapes from the DB for a particular room
-async function getExistingShapes(roomId: string) {
+async function getExistingShapes(roomId: string): Promise<Shape[]> {
   const res = await axios.get(`${HTTP_BACKEND_URL}/api/room/shapes/${roomId}`);
-  const measurement = res.data.measurement;
 
-  const shapes = measurement.map((m: { measurement: string }) => {
-    const shape: Shape = JSON.parse(m.measurement);
-    return shape;
-  });
+  // console.log("Response data:", res.data.chats);
 
+  const measurement =
+    res.data.chats.map(
+      (item: { measurement: string }) => JSON.parse(item.measurement) as Shape
+    ) || [];
+  // console.log("Measurement data:", measurement);
+
+  const shapes = measurement;
+
+  // console.log("parsed shapes:", shapes);
   return shapes;
 }

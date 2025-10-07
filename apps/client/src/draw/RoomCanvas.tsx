@@ -12,15 +12,33 @@ export default function RoomCanvas({ roomId }: { roomId: string }) {
 
   // * Effect for setting up Socket
   const socketRef = useRef<WebSocket | null>(null);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {
-    const ws = new WebSocket(`${WS_BACKEND_URL}?token${123}`);
+    const ws = new WebSocket(
+      `${WS_BACKEND_URL}?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYzZkODQ5Ni01ZjRjLTQ3M2UtYTU1OS00NTM0YjQ5NmYyMDAiLCJpYXQiOjE3NTk4MDkwMTgsImV4cCI6MTc1OTgzNzgxOH0.HU3AZ79nJWB0hIRqU8I0jNjGpXkM5Sbzc7ifYe0rvyM`
+    );
     ws.onopen = () => {
       socketRef.current = ws;
-      ws.send(JSON.stringify({ type: "join", roomId }));
+      setIsConnected(true);
+      ws.send(JSON.stringify({ type: "joinRoom", roomId }));
     };
-  }, []);
+    ws.onclose = () => {
+      socketRef.current = null;
+      setIsConnected(false);
+    };
+    ws.onerror = () => {
+      socketRef.current = null;
+      setIsConnected(false);
+    };
 
-  if (!socketRef.current) {
+    return () => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.close();
+      }
+    };
+  }, [roomId]);
+
+  if (!socketRef.current || !isConnected) {
     return <div>Loading...</div>;
   }
 
@@ -28,7 +46,6 @@ export default function RoomCanvas({ roomId }: { roomId: string }) {
     <div className="relative w-screen h-screen">
       <Canvas roomId={roomId} socket={socketRef.current} />
       {/* // TODO: make it a draggable, resizable component */}
-      // * tool box
       <DoubleContainer
         className="fixed z-10 top-[20%] left-[2%]"
         w={60}
