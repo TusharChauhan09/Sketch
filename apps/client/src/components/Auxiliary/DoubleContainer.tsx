@@ -13,7 +13,7 @@ export default function DoubleContainer({
 }: DoubleContainerProps) {
   return (
     <div
-      className={` w-${w} h-${h} border-2 border-neutral-600 rounded-2xl p-[2px] ${className || ""}`}
+      className={`w-auto w-${w} h-${h} border-2 border-neutral-600 rounded-2xl p-[2px] ${className || ""}`}
     >
       <div className="w-full h-full border-2 border-neutral-700 rounded-xl ">
         {children}

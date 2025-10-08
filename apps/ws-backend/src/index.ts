@@ -91,7 +91,7 @@ wss.on("connection", function connection(ws, req) {
           },
         });
 
-        console.log("Chat created:", chat);
+        //console.log("Chat created:", chat);
 
         users.forEach((u) => {
           if (u.rooms.includes(roomId) && u.ws !== ws) {

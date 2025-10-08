@@ -5,7 +5,7 @@ import DoubleContainer from "@/components/Auxiliary/DoubleContainer";
 import { WS_BACKEND_URL } from "@/app/lib/config";
 import Canvas from "./Canvas";
 
-type ShapeChoice = "rectangle" | "circle" | "line" | "null";
+type ShapeChoice = "rectangle" | "circle" | "line" | "null" | "pencile";
 
 export default function RoomCanvas({ roomId }: { roomId: string }) {
   const [shapeChoice, setShapeChoice] = useState<ShapeChoice>("rectangle");
@@ -15,7 +15,7 @@ export default function RoomCanvas({ roomId }: { roomId: string }) {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {
     const ws = new WebSocket(
-      `${WS_BACKEND_URL}?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYzZkODQ5Ni01ZjRjLTQ3M2UtYTU1OS00NTM0YjQ5NmYyMDAiLCJpYXQiOjE3NTk4MDkwMTgsImV4cCI6MTc1OTgzNzgxOH0.HU3AZ79nJWB0hIRqU8I0jNjGpXkM5Sbzc7ifYe0rvyM`
+      `${WS_BACKEND_URL}?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmYzZkODQ5Ni01ZjRjLTQ3M2UtYTU1OS00NTM0YjQ5NmYyMDAiLCJpYXQiOjE3NTk5MTkyMjIsImV4cCI6MTc1OTk0ODAyMn0.HZjOGqDD-y1cbP2nTPwyh04iaTHJ_g20vapTbhgH18o`
     );
     ws.onopen = () => {
       socketRef.current = ws;
@@ -43,32 +43,64 @@ export default function RoomCanvas({ roomId }: { roomId: string }) {
   }
 
   return (
-    <div className="relative w-screen h-screen">
+    <div className="relative min-w-screen h-screen">
       <Canvas roomId={roomId} socket={socketRef.current} />
       {/* // TODO: make it a draggable, resizable component */}
       <DoubleContainer
-        className="fixed z-10 top-[20%] left-[2%]"
-        w={60}
+        className="fixed flex z-5 top-[20%] left-[2%] min-w-60 min-h-100 bg-neutral-700 "
+        w={70}
         h={100}
       >
-        <div className="w-full h-full flex border-0 rounded-lg bg-neutral-700 items-center justify-center">
+        <div className=" w-60 min-h-100 flex flex-col border-0 rounded-lg bg-neutral-700">
           <DoubleContainer
-            w={56}
+            w={70}
             h={96}
-            className="flex items-center justify-center"
+            className=" min-w-60 h-1/3 flex flex-col items-center justify-center "
           >
-            <select
-              className="bg-neutral-800 text-white px-3 py-1 rounded-lg"
-              name=""
-              value={shapeChoice}
-              onChange={(e) => setShapeChoice(e.target.value as ShapeChoice)}
-              id=""
-            >
-              <option value="rectangle">Rectangle</option>
-              <option value="circle">Circle</option>
-              <option value="line">Line</option>
-              <option value="null">None</option>
-            </select>
+            <div className="w-full h-full bg-neutral-500 border-2 rounded-2xl flex items-center justify-around  p-2 m-[0.25px]">
+              <div>
+                <button
+                  className="text-4xl hover:cursor-pointer hover:bg-neutral-400 p-2  rounded-lg"
+                  onClick={() => setShapeChoice("rectangle")}
+                >
+                  ▯
+                </button>
+              </div>
+              <div>
+                <button
+                  className="text-5xl hover:cursor-pointer hover:bg-neutral-400  p-2 pr-11  rounded-lg"
+                  onClick={() => setShapeChoice("circle")}
+                >
+                  ⃝
+                </button>
+              </div>
+              <div>
+                <button
+                  className="text-3xl hover:cursor-pointer hover:bg-neutral-400 p-2  rounded-lg text-white"
+                  onClick={() => setShapeChoice("pencile")}
+                >
+                  🖍
+                </button>
+              </div>
+
+              <div>
+                <button
+                  className="text-4xl hover:cursor-pointer hover:bg-neutral-400 p-2  rounded-lg"
+                  onClick={() => setShapeChoice("line")}
+                >
+                  ―
+                </button>
+              </div>
+            </div>
+          </DoubleContainer>
+          <DoubleContainer
+            w={70}
+            h={96}
+            className=" min-w-60 min-h-2/3 flex flex-col items-center justify-center "
+          >
+            <div className="w-full h-full bg-neutral-500 border-2 rounded-2xl flex items-center justify-around  p-2 m-[0.25px]">
+frswfwfws
+            </div>
           </DoubleContainer>
         </div>
       </DoubleContainer>
