@@ -7,12 +7,12 @@ export default function Canvas({
   socket,
 }: {
   roomId: string;
-  socket: WebSocket;
+  socket: WebSocket | null;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   // * Effect for setting up canvas
   useEffect(() => {
-    if (canvasRef.current && socket.readyState === WebSocket.OPEN) {
+    if (canvasRef.current && socket && socket.readyState === WebSocket.OPEN) {
       const canvas = canvasRef.current;
       canvasRef.current.width = window.innerWidth;
       canvasRef.current.height = window.innerHeight;

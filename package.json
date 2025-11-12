@@ -1,5 +1,5 @@
 {
-  "name": "Convo",
+  "name": "sketch",
   "private": true,
   "scripts": {
     "build": "turbo run build",
